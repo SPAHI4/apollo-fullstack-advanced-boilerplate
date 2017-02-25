@@ -1,5 +1,5 @@
 # Planned features
-- [ ] Webpack2 configuration
+- [ ] Webpack2 configuration with HMR on both sides
 - [ ] Koa2 server
 - [ ] React template (with SSR?)
 - [ ] User accounts with https://github.com/js-accounts/accounts
