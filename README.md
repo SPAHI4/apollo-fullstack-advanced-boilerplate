@@ -7,3 +7,4 @@
 - [ ] Integration with UI library (Ant.design?)
 - [ ] TypeORM integration https://github.com/typeorm/typeorm
 - [ ] TypeORM + graphql (https://github.com/bkinsey808/typeorm-graphql-api ?)
+- [ ] PWA support: HTTP2, web workers, push messages
