@@ -7,4 +7,5 @@
 - [ ] Integration with UI library (Ant.design?)
 - [ ] TypeORM integration https://github.com/typeorm/typeorm
 - [ ] TypeORM + graphql (https://github.com/bkinsey808/typeorm-graphql-api ?)
+- [ ] Access control for resolvers or fields with roles by decorators
 - [ ] PWA support: HTTP2, web workers, push messages
