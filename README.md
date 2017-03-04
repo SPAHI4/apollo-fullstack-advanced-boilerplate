@@ -1,1 +1,3 @@
-That's advanced **React Apollo Koa PWA** boilerplate. 
+That's advanced **React Apollo Koa** boilerplate. 
+
+Coming soon...
