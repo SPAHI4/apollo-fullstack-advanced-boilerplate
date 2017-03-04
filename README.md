@@ -9,3 +9,4 @@
 - [ ] TypeORM + graphql (https://github.com/bkinsey808/typeorm-graphql-api ?)
 - [ ] Access control for resolvers or fields with roles by decorators
 - [ ] PWA support: HTTP2, web workers, push messages
+- [ ] i18n
