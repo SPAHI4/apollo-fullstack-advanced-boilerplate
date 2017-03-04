@@ -1,1 +1,1 @@
-  That's advanced **React Apollo Koa** boilerplate. Bui
+That's advanced **React Apollo Koa PWA** boilerplate. 
