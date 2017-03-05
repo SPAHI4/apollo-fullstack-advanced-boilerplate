@@ -1,0 +1,33 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb-base",
+  "plugins": [
+	"react"
+  ],
+  "env": {
+	"browser": true,
+	"es6": true,
+	"node": true
+  },
+  "ecmaFeatures": {
+	"defaultParams": true
+  },
+  "rules": {
+	// We use the 'import' plugin which allows for cases "flow" awareness.
+	"no-duplicate-imports": 0,
+	// A .jsx extension is not required for files containing jsx.
+	"react/jsx-filename-extension": 0,
+	// We use global requires in various places, e.g. code splitting instances.
+	"global-require": 0,
+	// Tabs are semantically right
+	"no-tabs": 0,
+	"no-mixed-spaces-and-tabs": [
+	  "error",
+	  "smart-tabs"
+	],
+	"indent": [
+	  "error",
+	  "tab"
+	]
+  }
+}
