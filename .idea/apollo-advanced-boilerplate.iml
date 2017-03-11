@@ -13,5 +13,9 @@
     <orderEntry type="library" name="react-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="react-redux-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="webpack-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="antd-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="graphql-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="koa-jwt-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="react-router-DefinitelyTyped" level="application" />
   </component>
 </module>

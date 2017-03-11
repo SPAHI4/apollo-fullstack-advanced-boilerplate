@@ -1,5 +1,5 @@
 export default {
-	port: 8080,
+	port: 1488,
 	database: {
 		env: 'development',
 		driver: 'mysql',

@@ -1,14 +1,15 @@
-import Koa from 'koa';
-import http2 from 'http2';
+import { createServer } from 'http2';
+// import http from 'http';
 import fs from 'fs';
+import Koa from 'koa';
+import serve from 'koa-static';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
 
-import config from '../config'
+import config from '../config';
 
 const app = new Koa();
 
-app.use(ctx => {
-	ctx.body = 'Hello Koa';
-});
+app.use(serve('build/client'));
 
 const options = {
 	key: fs.readFileSync('./cert/localhost.key'),
@@ -16,10 +17,17 @@ const options = {
 };
 
 
-const server = http2.createServer(options, app.callback());
+const server = createServer(options, app.callback());
 
 server.listen(config.port, () => {
-	console.log('app is running')
+	console.log('app is running');
+
+	new SubscriptionServer({
+		subscriptionManager: {},
+	}, {
+		server,
+		path: '/',
+	});
 });
 
-export { app };
+export { app, server };
