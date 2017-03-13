@@ -1,11 +1,19 @@
 import ApolloClient, { createBatchingNetworkInterface } from 'apollo-client';
+import createNetworkInterface from 'apollo-upload-client';
 import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 
 const getAuthToken = () => localStorage.getItem('auth-token');
 
-const networkInterface = createBatchingNetworkInterface({
+/* const networkInterface = createBatchingNetworkInterface({
+ uri: '/graphql',
+ batchInterval: 10,
+ opts: {
+ credentials: 'same-origin',
+ },
+ }); */
+
+const networkInterface = createNetworkInterface({
 	uri: '/graphql',
-	batchInterval: 10,
 	opts: {
 		credentials: 'same-origin',
 	},
@@ -19,7 +27,7 @@ const wsClient = new SubscriptionClient(window.location.origin.replace('https:',
 });
 
 const authMiddleware = {
-	applyBatchMiddleware(req, next) {
+	applyMiddleware(req, next) {
 		if (!req.options.headers) {
 			req.options.headers = {};
 		}
@@ -31,7 +39,7 @@ const authMiddleware = {
 };
 
 const authErrorAfterware = {
-	applyBatchAfterware({ response }, next) {
+	applyAfterware({ response }, next) {
 		if (response.status === 401) {
 			// TODO: logout();
 			console.log('Logging out...');
@@ -41,7 +49,7 @@ const authErrorAfterware = {
 };
 
 const serverErrorAfterware = {
-	applyBatchAfterware({ response }, next) {
+	applyAfterware({ response }, next) {
 		if (response.status === 500) {
 			// TODO: show error message
 			console.error('Server returned an error');

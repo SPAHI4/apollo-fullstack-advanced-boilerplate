@@ -10,7 +10,13 @@ const compiler = Webpack(config);
 // compiler.apply(new DashboardPlugin());
 
 const middleware = koaWebpack({
-	compiler
+	compiler,
+	dev: {
+		stats: {
+			colors: true
+		},
+		serverSideRender: false,
+	}
 });
 
 app.use(middleware);

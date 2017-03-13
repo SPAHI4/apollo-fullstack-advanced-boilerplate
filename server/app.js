@@ -1,5 +1,5 @@
 import { createServer } from 'http2';
-// import http from 'http';
+// import { createServer } from 'http';
 import fs from 'fs';
 import Koa from 'koa';
 import serve from 'koa-static';
@@ -20,7 +20,7 @@ const options = {
 const server = createServer(options, app.callback());
 
 server.listen(config.port, () => {
-	console.log('app is running');
+	console.log('http2 server is running');
 
 	new SubscriptionServer({
 		subscriptionManager: {},

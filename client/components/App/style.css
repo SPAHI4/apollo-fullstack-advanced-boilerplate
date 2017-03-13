@@ -1,3 +1,11 @@
 /*
 global styles for the app
  */
+
+:root {
+	--primary-color: red;
+}
+
+.app {
+	background: var(--primary-color);
+}
