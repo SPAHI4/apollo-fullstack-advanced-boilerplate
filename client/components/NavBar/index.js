@@ -9,7 +9,7 @@ const NavBar = () => {
 				mode="horizontal"
 			>
 				<Menu.Item key="mail">
-					<Icon type="mail" />Navigation One
+					<Icon type="mail" />Navigation 123
 				</Menu.Item>
 				<Menu.Item key="app" disabled>
 					<Icon type="appstore" />Navigation Two

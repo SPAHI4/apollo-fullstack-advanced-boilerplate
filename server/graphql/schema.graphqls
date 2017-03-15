@@ -1,0 +1,43 @@
+scalar DateTime
+
+type User {
+	id: ID!
+	username: String!
+	email: String!
+}
+
+type Post {
+	id: ID!,
+	title: String!,
+	content: String,
+	createdAt: DateTime,
+	updatedAt: DateTime
+}
+
+type Query {
+	currentUser: User,
+	users: [User],
+	posts: [Post]
+}
+
+type AuthenticateResponse {
+	token: String!,
+	currentUser: User!
+}
+
+type Mutation {
+	authenticate(login: String!, password: String!): AuthenticateResponse
+	createPost(post: PostInput!): Post
+	updatePost(id: Int!, post: PostInput!): Post
+	deletePost(id: Int!): Post
+}
+
+type Subscription {
+	postCreated: Post
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+	subscription: Subscription
+}

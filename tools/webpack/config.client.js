@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import webpack from 'webpack';
+import merge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import cheerio from 'cheerio';
 
@@ -15,6 +16,7 @@ const baseConfig = {
 	context: process.cwd(),
 	entry: [
 		'react-hot-loader/patch',
+		// disable until 404 will be fixed
 		// 'webpack-dev-server/client',
 		'webpack-hot-middleware/client',
 		'./client/index.js',
@@ -22,6 +24,7 @@ const baseConfig = {
 	output: {
 		path: path.resolve(process.cwd(), 'build/client'),
 		publicPath: '/',
+		filename: '[name].[hash].js',
 		devtoolModuleFilenameTemplate: 'webpack:///[absolute-resource-path]',
 	},
 	devtool: 'source-map',
@@ -71,10 +74,13 @@ const baseConfig = {
 						options: {
 							sourceMap: 'inline',
 							plugins: [
-								require('postcss-url')(),
 								require('postcss-cssnext')({
 									features: {
-										customProperties: false
+										customProperties: {
+											variables: {
+												'primary-color': config.primaryColor
+											}
+										}
 									}
 								}),
 								require('postcss-reporter')(),
@@ -123,9 +129,6 @@ function getHtmlTemplate() {
 	return html;
 }
 
-const realConfig = DEV ? devConfig : prodConfig;
+const currentConfig = DEV ? devConfig : prodConfig;
 
-export default {
-	...baseConfig,
-	...realConfig,
-};
+export default merge(baseConfig, currentConfig);

@@ -1,10 +1,21 @@
 export default {
 	port: 1488,
 	database: {
-		env: 'development',
-		driver: 'mysql',
-		host: 'localhost',
-		user: 'root',
-		password: ''
+		production: {
+			type: 'mysql',
+			host: 'localhost',
+			port: 3306,
+			username: 'root',
+			password: 'admin',
+			database: 'test'
+		},
+		development: {
+			type: 'mysql',
+			host: 'localhost',
+			port: 3306,
+			username: 'root',
+			password: 'admin',
+			database: 'test'
+		}
 	}
 }

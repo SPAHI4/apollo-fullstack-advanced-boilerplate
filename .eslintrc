@@ -28,6 +28,13 @@
 	"indent": [
 	  "error",
 	  "tab"
+	],
+	"graphql/template-strings": [
+	  "error",
+	  {
+		"env": "apollo",
+		"schema": "graphql.schema.json"
+	  }
 	]
   }
 }
