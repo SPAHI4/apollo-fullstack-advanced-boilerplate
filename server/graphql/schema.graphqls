@@ -1,17 +1,35 @@
 scalar DateTime
+scalar Date
 
 type User {
 	id: ID!
+	username: String
+	email: String
+	firstName: String
+	lastName: String
+	posts: [Post]
+}
+
+input UserInput {
 	username: String!
 	email: String!
+	password: String!
+	firstName: String
+	lastName: String
 }
 
 type Post {
 	id: ID!,
-	title: String!,
-	content: String,
-	createdAt: DateTime,
+	title: String!
+	content: String
+	createdAt: DateTime
 	updatedAt: DateTime
+	author: User
+}
+
+input PostInput {
+	title: String
+	content: String
 }
 
 type Query {
@@ -20,13 +38,14 @@ type Query {
 	posts: [Post]
 }
 
-type AuthenticateResponse {
+type UserWithToken {
 	token: String!,
 	currentUser: User!
 }
 
 type Mutation {
-	authenticate(login: String!, password: String!): AuthenticateResponse
+	getToken(login: String!, password: String!): UserWithToken
+	createUser(user: UserInput!): UserWithToken
 	createPost(post: PostInput!): Post
 	updatePost(id: Int!, post: PostInput!): Post
 	deletePost(id: Int!): Post

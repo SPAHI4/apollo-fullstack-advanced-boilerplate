@@ -1,22 +1,33 @@
-import { get, post } from 'koa-route';
 import { apolloUploadKoa } from 'apollo-upload-server';
 import { graphiqlKoa, graphqlKoa } from 'graphql-server-koa';
 import { formatError } from 'apollo-errors';
+import koaJwt from 'koa-jwt';
 
+import { router } from '../app';
 import config from '../../config';
-import { schema } from '../graphql/schema';
+import schema from '../graphql/schema';
+import getConnection from '../database/connection';
+import { User } from '../database/entity';
 
-const graphql = post(
+const graphql = router.post(
 	'/graphql',
 	apolloUploadKoa({
 		uploadDir: config.path.uploads
 	}),
-	(ctx) => graphqlKoa({
-		schema,
-		context: {},
-		formatError,
-	}),
-);
-const graphiql = get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
+	async (ctx) => {
+		const connection = await getConnection();
 
-export default [graphql, graphiql];
+		return graphqlKoa({
+			schema,
+			context: {
+				connection,
+				currentUser: ctx.state.user,
+				userRepository: connection.getRepository(User),
+			},
+			formatError,
+		});
+	},
+);
+const graphiql = router.get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
+
+export default [koaJwt, graphql, graphiql];

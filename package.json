@@ -6,7 +6,7 @@
     "start:tunnel": "NGROK_TUNNEL=true yarn run build && yarn run start",
     "dev:dashboard": "webpack-dashboard -- babel-node ./tools/dev",
     "~postinstall": "typeorm schema:sync && typeorm migrations:run && yarn run build",
-    "generate-schema": "apollo-codegen introspect-schema https://localhost:1488/graphql --output graphql.schema.json"
+    "generate-schema": "apollo-codegen introspect-schema ./server/graphql/schema.graphqls --output graphql.schema.json"
   },
   "engines": {
     "node": "7.7.1",
@@ -24,6 +24,8 @@
     "apollo-upload-client": "^1.0.2",
     "apollo-upload-server": "^1.1.0",
     "app-root-path": "^2.0.1",
+    "babel-plugin-transform-decorators": "^6.22.0",
+    "bcrypt": "^1.0.2",
     "cheerio": "^0.22.0",
     "colors": "^1.1.2",
     "eslint-plugin-graphql": "^0.6.1",
@@ -40,9 +42,10 @@
     "koa-jwt": "^3.0.0",
     "koa-mount": "^2.0.0",
     "koa-ratelimit": "^4.0.0",
-    "koa-route": "^3.2.0",
+    "koa-router": "^5.4.0",
     "koa-send": "^3.3.0",
     "koa-static": "^3.0.0",
+    "lodash": "^4.17.4",
     "mysql": "^2.13.0",
     "nodemon": "^1.11.0",
     "react": "^15.4.2",

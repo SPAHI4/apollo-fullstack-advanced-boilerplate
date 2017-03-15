@@ -5,48 +5,27 @@ import {
 import { PubSub } from 'graphql-subscriptions';
 import {
 	GraphQLDate,
-	GraphQLDateTime
-} from 'graphql-iso-date'
+	GraphQLDateTime,
+} from 'graphql-iso-date';
+import { merge } from 'lodash';
 
 // import schema from './schema.graphqls';
-const schema = require('fs').readFileSync(__dirname + '/schema.graphqls').toString();
+const rootSchema = require('fs').readFileSync(__dirname + '/schema.graphqls').toString();
 import log from '../../tools/log';
+import { postResolvers, userResolvers } from './resolvers';
+import { pubsub } from './subscriptions';
 
-const resolvers = {
-	Query: {
-		currentUser(root, {}, { currentUser }) {
-			return currentUser;
-		},
-		users() {
-
-		},
-		posts() {
-
-		}
-	},
-	Mutation: {
-		createPost() {
-
-		}
-	},
-	Subscription: {
-		postCreated() {
-
-		}
-	},
-	User: {
-		posts() {
-
-		}
-	},
-	Post: {
-		author() {
-
-		}
-	},
+const rootResolvers = {
+	Query: { },
+	Mutation: { },
+	Subscription: { },
 	Date: GraphQLDate,
 	DateTime: GraphQLDateTime,
 };
+
+
+const schema = [rootSchema];
+const resolvers = merge(rootResolvers, userResolvers, postResolvers);
 
 const executableSchema = makeExecutableSchema({
 	typeDefs: schema,
@@ -54,11 +33,7 @@ const executableSchema = makeExecutableSchema({
 });
 
 addErrorLoggingToSchema(executableSchema, {
-	log(e) {
-		log.error(e);
-	}
+	log: e => console.error(e)
 });
 
-
-export const pubsub = new PubSub();
 export default executableSchema;

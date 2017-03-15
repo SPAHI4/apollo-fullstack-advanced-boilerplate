@@ -5,16 +5,21 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import compose from 'koa-compose';
+import Router from 'koa-router';
 
 import config from '../config';
 import { security, graphql, serve } from './middleware';
 
 const app = new Koa();
+const router = new Router();
 
-app.use(bodyParser());
-app.use(compose(security));
-app.use(compose(serve));
-app.use(compose(graphql));
+app
+	.use(bodyParser())
+	.use(compose(security))
+	.use(compose(serve))
+	.use(compose(graphql))
+	.use(router.routes())
+	.use(router.allowedMethods());
 
 const options = {
 	key: fs.readFileSync('./cert/localhost.key'),
@@ -31,4 +36,4 @@ new SubscriptionServer({
 	path: '/',
 });
 
-export { app, server };
+export { app, router, server };
