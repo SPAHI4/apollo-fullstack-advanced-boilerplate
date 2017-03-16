@@ -13,6 +13,16 @@
 	"defaultParams": true
   },
   "rules": {
+	"import/no-extraneous-dependencies": [
+	  "error",
+	  {
+		"devDependencies": [
+		  "tools/**/*",
+		  "**/*.test.js",
+		  "**/*.spec.js"
+		]
+	  }
+	],
 	// We use the 'import' plugin which allows for cases "flow" awareness.
 	"no-duplicate-imports": 0,
 	// A .jsx extension is not required for files containing jsx.

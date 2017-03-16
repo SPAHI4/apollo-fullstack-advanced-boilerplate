@@ -10,7 +10,7 @@ import log from '../../tools/log';
 let connection;
 
 const connectionOptions = {
-	driver: config.database[process.env.IS_PROD ? 'production' : 'development'],
+	driver: config.database,
 	autoSchemaSync: process.env.IS_DEV,
 	entities: [
 		User

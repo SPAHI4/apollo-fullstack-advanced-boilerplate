@@ -1,16 +1,23 @@
 import appRoot from 'app-root-path';
-
-// TODO: Here we need to return safe merged config for server or client
-
-import clientConfig from './client';
 import sharedConfig from './shared';
-import serverConfig from './server';
 
-const currentConfig = process.env.IS_SERVER ? serverConfig : clientConfig;
+let currentConfig;
+
+if (process.env.IS_CLIENT) {
+	currentConfig = require('./client').default;
+} else {
+	currentConfig = require('./server').default;
+}
+
+const IS_DEV = process.env.NODE_ENV !== 'production';
+const getConfigForEnv = ({ production, development, ...shared }) => ({
+	...shared,
+	...(IS_DEV ? development : production),
+});
 
 const config = {
-	...sharedConfig,
-	...currentConfig,
+	...getConfigForEnv(sharedConfig),
+	...getConfigForEnv(currentConfig),
 };
 
 // Magically resolve path
@@ -19,5 +26,7 @@ if (config.path) {
 		config.path[path] = appRoot.resolve(config.path[path]);
 	});
 }
+
+console.log(process.env.IS_CLIENT, config);
 
 export default config;

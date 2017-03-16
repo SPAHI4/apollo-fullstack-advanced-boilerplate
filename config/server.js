@@ -1,21 +1,27 @@
 export default {
-	port: 1488,
-	database: {
-		production: {
+	commonValue: 'foo',
+
+	development: {
+		port: 1488,
+		webpackPort: 1337,
+		database: {
 			type: 'mysql',
 			host: 'localhost',
 			port: 3306,
 			username: 'root',
 			password: 'admin',
-			database: 'test'
+			database: 'test',
 		},
-		development: {
+	},
+	production: {
+		port: 8080,
+		database: {
 			type: 'mysql',
 			host: 'localhost',
 			port: 3306,
 			username: 'root',
 			password: 'admin',
-			database: 'test'
-		}
-	}
+			database: 'test',
+		},
+	},
 }

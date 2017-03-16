@@ -1,4 +1,3 @@
 {
-  "presets": ["es2017-node7"],
-  "plugins": ["transform-decorators"]
+  "plugins": ["transform-object-rest-spread","transform-es2015-modules-commonjs"]
 }

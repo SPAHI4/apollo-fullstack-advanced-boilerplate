@@ -4,9 +4,10 @@ import mount from 'koa-mount';
 import send from 'koa-send';
 
 import config from '../../config';
+import compose from '../utils/composeMiddleware';
 
 const assets = serve(config.path.frontend);
 
 const uploads = mount('/uploads', ctx => { ctx.set('Content-Disposition', 'attachment'); }, serve(config.path.uploads));
 
-export default [ assets, uploads ];
+export default compose(assets, uploads);

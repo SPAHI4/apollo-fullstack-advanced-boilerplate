@@ -2,24 +2,21 @@ import http2 from 'http2';
 import https from 'https';
 import fs from 'fs';
 import Koa from 'koa';
-import bodyParser from 'koa-bodyparser';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
-import compose from 'koa-compose';
-import Router from 'koa-router';
 
+import compose from './utils/composeMiddleware';
 import config from '../config';
-import { security, graphql, serve } from './middleware';
+import { securityLayer, graphqlLayer, serveLayer } from './middleware';
 
 const app = new Koa();
-const router = new Router();
+let server;
 
 app
-	.use(bodyParser())
-	.use(compose(security))
-	.use(compose(serve))
-	.use(compose(graphql))
-	.use(router.routes())
-	.use(router.allowedMethods());
+	// .use(securityLayer)
+	.use(serveLayer)
+	.use(graphqlLayer);
+
+// app.use(require('koa-static')(config.path.frontend));
 
 const options = {
 	key: fs.readFileSync('./cert/localhost.key'),
@@ -27,7 +24,7 @@ const options = {
 };
 
 const { createServer } = (config.http2.enabled ? http2 : https);
-const server = createServer(options, app.callback());
+server = createServer(options, app.callback());
 
 new SubscriptionServer({
 	subscriptionManager: {},
@@ -36,4 +33,25 @@ new SubscriptionServer({
 	path: '/',
 });
 
-export { app, router, server };
+server.on('close', () => {
+	server = undefined;
+});
+
+export { app, server };
+
+
+
+if (module.hot) {
+	try {
+		module.hot.dispose(() => {
+			if (server) {
+				server.close();
+			}
+		});
+
+		module.hot.accept();
+
+	} catch (err) {
+		console.error(err.stack);
+	}
+}

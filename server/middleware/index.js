@@ -1,3 +1,3 @@
-export { default as graphql } from './graphql';
-export { default as security } from './security';
-export { default as serve } from './serve';
+export { default as graphqlLayer } from './graphql';
+export { default as securityLayer } from './security';
+export { default as serveLayer } from './serve';

@@ -1,17 +1,15 @@
-import Webpack from 'webpack';
+import webpack from 'webpack';
+import Koa from 'koa';
 import koaWebpack from 'koa-webpack';
 import DashboardPlugin from 'webpack-dashboard/plugin';
-import path from 'path';
 
-import { app, server } from '../../server/app';
 import config from '../../config';
 import webpackConfig from '../webpack/config.client';
+import log from '../log';
 
-server.listen(config.port, () => {
-	console.log(`dev server is running on port ${config.port}`);
-});
+const devServer = new Koa();
 
-const compiler = Webpack(webpackConfig);
+const compiler = webpack(webpackConfig);
 compiler.apply(new DashboardPlugin());
 
 const middleware = koaWebpack({
@@ -21,8 +19,9 @@ const middleware = koaWebpack({
 			colors: true
 		},
 		serverSideRender: false,
-	}
+	},
 });
 
+devServer.use(middleware);
 
-app.use(middleware);
+devServer.listen(config.webpackPort);

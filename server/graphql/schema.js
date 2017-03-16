@@ -9,8 +9,8 @@ import {
 } from 'graphql-iso-date';
 import { merge } from 'lodash';
 
-// import schema from './schema.graphqls';
-const rootSchema = require('fs').readFileSync(__dirname + '/schema.graphqls').toString();
+import rootSchema from './schema.graphqls';
+// const rootSchema = require('fs').readFileSync(__dirname + '/schema.graphqls').toString();
 import log from '../../tools/log';
 import { postResolvers, userResolvers } from './resolvers';
 import { pubsub } from './subscriptions';

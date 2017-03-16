@@ -8,7 +8,7 @@ import {
 	Index,
 	ManyToMany,
 	JoinTable
-} from "typeorm";
+} from 'typeorm';
 import bcrypt from 'bcrypt';
 
 @Entity()
