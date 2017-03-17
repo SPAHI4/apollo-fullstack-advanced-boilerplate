@@ -15,17 +15,18 @@ const IS_DEV = process.env.NODE_ENV !== 'production';
 const baseConfig = {
 	target: 'web',
 	context: appRoot.toString(),
-	entry: [
-		'react-hot-loader/patch',
-		// disable until 404 will be fixed
-		// 'webpack-dev-server/client',
-		'webpack-hot-middleware/client',
-		'regenerator-runtime/runtime',
-		'./client/index.js',
-	],
+	entry: {
+		app: [
+			'react-hot-loader/patch',
+			'webpack-dev-server/client',
+			'webpack/hot/only-dev-server',
+			'regenerator-runtime/runtime',
+			'./client/index.js',
+		],
+	},
 	output: {
 		path: config.path.frontend,
-		publicPath: '/',
+		publicPath: config.publicPath,
 		filename: '[name].[hash].js',
 		// devtoolModuleFilenameTemplate: 'webpack:///[absolute-resource-path]',
 	},
@@ -85,6 +86,7 @@ const baseConfig = {
 										}
 									}
 								}),
+								// require('postcss-csso'),
 								require('postcss-reporter')(),
 							]
 						}

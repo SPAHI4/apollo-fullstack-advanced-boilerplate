@@ -4,7 +4,7 @@ export default class MainPage extends Component {
 	render() {
 		return (
 			<div>
-				MAIN PAGE
+				MAIN PAGE545
 			</div>
 		);
 	}

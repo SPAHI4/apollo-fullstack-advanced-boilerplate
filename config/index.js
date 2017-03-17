@@ -27,6 +27,4 @@ if (config.path) {
 	});
 }
 
-console.log(process.env.IS_CLIENT, config);
-
 export default config;

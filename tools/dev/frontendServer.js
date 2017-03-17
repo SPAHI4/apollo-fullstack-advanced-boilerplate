@@ -1,27 +1,41 @@
 import webpack from 'webpack';
-import Koa from 'koa';
-import koaWebpack from 'koa-webpack';
-import DashboardPlugin from 'webpack-dashboard/plugin';
+import fs from 'fs';
+import WebpackDevServer from 'webpack-dev-server';
+import chalk from 'chalk';
 
 import config from '../../config';
 import webpackConfig from '../webpack/config.client';
-import log from '../log';
+import WebpackReporter from '../webpack/reporter';
 
-const devServer = new Koa();
-
+const options = {
+	key: fs.readFileSync('./cert/localhost.key'),
+	cert: fs.readFileSync('./cert/localhost.crt'),
+};
 const compiler = webpack(webpackConfig);
-compiler.apply(new DashboardPlugin());
 
-const middleware = koaWebpack({
-	compiler,
-	dev: {
-		stats: {
-			colors: true
+const webpackReporter = new WebpackReporter(compiler, 'frontend');
+
+const devServer = new WebpackDevServer(compiler, {
+	port: config.webpackPort,
+	proxy: {
+		'*': {
+			publicPath: config.publicPath,
+			headers: { 'Access-Control-Allow-Origin': '*' },
+			target: 'https://localhost:1488',
+			secure: false,
 		},
-		serverSideRender: false,
 	},
+	https: options,
+	reporter: webpackReporter.reporter(true),
+	hot: true,
 });
 
-devServer.use(middleware);
+compiler.plugin('done', () => {
+	console.log(`Developer server started:
+	==> ${chalk.cyan(`https://localhost:${config.webpackPort}`)}
+`);
+});
 
 devServer.listen(config.webpackPort);
+
+export default devServer;

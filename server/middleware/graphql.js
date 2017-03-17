@@ -37,6 +37,7 @@ const graphql = post(
 		},
 	),
 );
+
 const graphiql = get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
 
 export default compose(koaJwt({ secret: publicKey, passthrough: true }), graphql, graphiql);

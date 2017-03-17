@@ -1,11 +1,13 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
+import minilog from 'minilog';
+
 import { User } from './entity';
 // import {} from './repository';
 // import {} from './subscriber';
-
 import config from '../../config';
-import log from '../../tools/log';
+
+const logger = minilog('TypeORM');
 
 let connection;
 
@@ -18,7 +20,7 @@ const connectionOptions = {
 	subscribers: [],
 	logging: {
 		logQueries: process.env.IS_DEV,
-		log: log('TYPEORM')
+		logger: (level, message) => logger[level](message),
 	},
 };
 

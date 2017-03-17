@@ -3,6 +3,8 @@ import https from 'https';
 import fs from 'fs';
 import Koa from 'koa';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
+import minilog from 'minilog';
+import logger from 'koa-logger';
 
 import compose from './utils/composeMiddleware';
 import config from '../config';
@@ -12,7 +14,7 @@ const app = new Koa();
 let server;
 
 app
-	// .use(securityLayer)
+	.use(securityLayer)
 	.use(serveLayer)
 	.use(graphqlLayer);
 
@@ -20,7 +22,7 @@ app
 
 const options = {
 	key: fs.readFileSync('./cert/localhost.key'),
-	cert: fs.readFileSync('./cert/localhost.crt')
+	cert: fs.readFileSync('./cert/localhost.crt'),
 };
 
 const { createServer } = (config.http2.enabled ? http2 : https);

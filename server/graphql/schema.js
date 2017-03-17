@@ -3,6 +3,7 @@ import {
 	addErrorLoggingToSchema
 } from 'graphql-tools';
 import { PubSub } from 'graphql-subscriptions';
+import minilog from 'minilog';
 import {
 	GraphQLDate,
 	GraphQLDateTime,
@@ -11,7 +12,7 @@ import { merge } from 'lodash';
 
 import rootSchema from './schema.graphqls';
 // const rootSchema = require('fs').readFileSync(__dirname + '/schema.graphqls').toString();
-import log from '../../tools/log';
+
 import { postResolvers, userResolvers } from './resolvers';
 import { pubsub } from './subscriptions';
 
@@ -33,7 +34,7 @@ const executableSchema = makeExecutableSchema({
 });
 
 addErrorLoggingToSchema(executableSchema, {
-	log: e => console.error(e)
+	log: minilog('graphql').error,
 });
 
 export default executableSchema;

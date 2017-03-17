@@ -2,9 +2,13 @@
 
 import webpack from 'webpack';
 import { spawn } from 'child_process';
+import ora from 'ora';
+import minilog from 'minilog';
 
 import config from '../../config';
 import serverConfig from '../webpack/config.server';
+import WebpackReporter from '../webpack/reporter';
+
 
 let server;
 let serverStarted;
@@ -18,7 +22,7 @@ process.on('exit', () => {
 function runServer(path) {
 	if (serverStarted) {
 		serverStarted = false;
-		server = spawn('inspect', [path], { stdio: 'inherit' });
+		server = spawn('node', [path], { stdio: 'inherit' });
 		server.on('exit', code => {
 			if (code === 250) {
 				// App requested full reload
@@ -32,9 +36,11 @@ function runServer(path) {
 }
 
 const compiler = webpack(serverConfig);
+const webpackReporter = new WebpackReporter(compiler, 'backend');
 
 compiler.plugin('done', () => {
 	serverStarted = true;
+	console.log('DONE!');
 	if (server) {
 
 	} else {
@@ -42,30 +48,4 @@ compiler.plugin('done', () => {
 	}
 });
 
-compiler.watch({}, (err, stats) => {
-
-	if (err) {
-		console.error(err.stack || err);
-		if (err.details) {
-			console.error(err.details);
-		}
-		return;
-	}
-
-	console.log(stats.toString({
-		hash: false,
-		version: false,
-		timings: true,
-		assets: false,
-		chunks: false,
-		modules: false,
-		reasons: false,
-		children: false,
-		source: true,
-		errors: true,
-		errorDetails: true,
-		warnings: true,
-		publicPath: false,
-		colors: true
-	}));
-});
+compiler.watch({}, webpackReporter.reporter());
