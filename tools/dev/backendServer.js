@@ -22,7 +22,7 @@ process.on('exit', () => {
 function runServer(path) {
 	if (serverStarted) {
 		serverStarted = false;
-		server = spawn('node', [path], { stdio: 'inherit' });
+		server = spawn('inspect', [path], { stdio: 'inherit' });
 		server.on('exit', code => {
 			if (code === 250) {
 				// App requested full reload
@@ -49,3 +49,5 @@ compiler.plugin('done', () => {
 });
 
 compiler.watch({}, webpackReporter.reporter());
+
+export default compiler;

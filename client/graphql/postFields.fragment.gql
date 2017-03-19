@@ -1,0 +1,12 @@
+fragment postFields on Post {
+	id
+	title
+	content
+	createdAt
+	updatedAt
+	author {
+		id
+		username
+		avatar
+	}
+}

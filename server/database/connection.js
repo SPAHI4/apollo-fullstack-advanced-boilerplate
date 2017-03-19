@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import minilog from 'minilog';
 
-import { User } from './entity';
+import { User, Post } from './entity';
 // import {} from './repository';
 // import {} from './subscriber';
 import config from '../../config';
@@ -15,7 +15,8 @@ const connectionOptions = {
 	driver: config.database,
 	autoSchemaSync: process.env.IS_DEV,
 	entities: [
-		User
+		User,
+		Post,
 	],
 	subscribers: [],
 	logging: {
@@ -25,5 +26,10 @@ const connectionOptions = {
 };
 
 export default async function getConnection() {
-	return (connection && connection.isConnected) ? connection : createConnection(connectionOptions);
+	return (connection && connection.isConnected)
+		? connection
+		: createConnection(connectionOptions).then((conn) => {
+			connection = conn;
+			return connection;
+		});
 }

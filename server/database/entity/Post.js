@@ -5,48 +5,32 @@ import {
 	ManyToOne,
 	OneToMany,
 	CreateDateColumn,
+	UpdateDateColumn,
 	Index,
 	ManyToMany,
 	JoinTable
 } from "typeorm";
-import bcrypt from 'bcrypt';
+
+import { User } from './User';
 
 @Entity()
-export class User {
+export class Post {
 	@PrimaryGeneratedColumn('int')
 	id;
-
-	@Index()
-	@Column('string', { unique: true })
-	email;
-
-	@Index()
-	@Column('string', { unique: true })
-	username;
 
 	@CreateDateColumn()
 	createdAt;
 
-	@Column('string')
-	hash;
+	@UpdateDateColumn()
+	updatedAt;
+
+	@Column('text')
+	content;
 
 	@Column('string')
-	salt;
+	title;
 
-	@Column('string', { nullable: true })
-	firstName;
-
-	@Column('string', { nullable: true })
-	lastName;
-
-	async setPassword(password) {
-		// TODO: refresh jwt
-		const hash = await bcrypt.hash(password);
-		this.hash = hash;
-	}
-
-	async isValidPassword(password) {
-		return bcrypt.compare(password, this.hash);
-	}
+	@ManyToOne(type => User, user => user.posts)
+	author;
 
 }

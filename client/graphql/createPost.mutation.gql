@@ -1,0 +1,7 @@
+#import './postFields.fragment.gql'
+
+mutation createPost($post: PostInput!) {
+	createPost(post: $post) {
+		...postFields
+	}
+}

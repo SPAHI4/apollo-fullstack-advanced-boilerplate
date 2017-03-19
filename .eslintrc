@@ -2,7 +2,8 @@
   "parser": "babel-eslint",
   "extends": "airbnb-base",
   "plugins": [
-	"react"
+	"react",
+	"graphql"
   ],
   "env": {
 	"browser": true,
@@ -43,7 +44,7 @@
 	  "error",
 	  {
 		"env": "apollo",
-		"schema": "graphql.schema.json"
+		"schemaJsonFilepath": "graphql.schema.json"
 	  }
 	]
   }

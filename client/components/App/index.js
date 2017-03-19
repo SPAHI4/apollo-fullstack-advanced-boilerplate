@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { Layout, Menu, Breadcrumb } from 'antd';
 const { Header, Content, Footer } = Layout;
 
-import MainPage from '../../pages/Main';
+import PostsPage from '../../pages/Posts';
 
 import NavBar from '../NavBar';
 
@@ -15,7 +15,7 @@ export default function App() {
 			<NavBar/>
 			<Content>
 				<Switch>
-					<Route path="/" component={MainPage}/>
+					<Route path="/" component={PostsPage}/>
 				</Switch>
 			</Content>
 		</Layout>

@@ -11,6 +11,8 @@ import {
 } from 'typeorm';
 import bcrypt from 'bcrypt';
 
+import { Post } from './Post';
+
 @Entity()
 export class User {
 	@PrimaryGeneratedColumn('int')
@@ -30,14 +32,14 @@ export class User {
 	@Column('string')
 	hash;
 
-	@Column('string')
-	salt;
-
 	@Column('string', { nullable: true })
 	firstName;
 
 	@Column('string', { nullable: true })
 	lastName;
+
+	@OneToMany(type => Post, post => post.author)
+	posts;
 
 	async setPassword(password) {
 		// TODO: refresh jwt

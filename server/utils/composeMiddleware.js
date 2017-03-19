@@ -3,7 +3,7 @@
  * a fully valid middleware comprised
  * of all those which are passed.
  *
- * @param {Array} middleware
+ * @param [Function] middleware
  * @return {Function}
  * @api public
  */

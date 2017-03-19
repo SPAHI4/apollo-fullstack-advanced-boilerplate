@@ -2,10 +2,11 @@ import webpack from 'webpack';
 import fs from 'fs';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
+import minilog from 'minilog';
 
 import config from '../../config';
 import webpackConfig from '../webpack/config.client';
-import WebpackReporter from '../webpack/reporter';
+import getHtml from './getHtml';
 
 const options = {
 	key: fs.readFileSync('./cert/localhost.key'),
@@ -13,29 +14,62 @@ const options = {
 };
 const compiler = webpack(webpackConfig);
 
-const webpackReporter = new WebpackReporter(compiler, 'frontend');
+class FrontendServer {
 
-const devServer = new WebpackDevServer(compiler, {
-	port: config.webpackPort,
-	proxy: {
-		'*': {
-			publicPath: config.publicPath,
-			headers: { 'Access-Control-Allow-Origin': '*' },
-			target: 'https://localhost:1488',
-			secure: false,
-		},
-	},
-	https: options,
-	reporter: webpackReporter.reporter(true),
-	hot: true,
-});
+	firstBuild = false
 
-compiler.plugin('done', () => {
-	console.log(`Developer server started:
-	==> ${chalk.cyan(`https://localhost:${config.webpackPort}`)}
-`);
-});
+	constructor(wconfig) {
+		this.compiler = webpack(wconfig);
+		this.startDevServer();
+		this.logger = minilog('webpack:frontend');
+		this.compiler.plugin('compile', (stats) => {
+			this.logger.info('Building frontend...');
+		});
+		this.compiler.plugin('done', (stats) => {
+			debugger;
+			if (stats.hasErrors()) {
+				this.logger.error('Frontend build failed:');
+				this.logger.error(stats.toString({
+					colors: true
+				}));
+			} else if (!this.firstBuild) {
+				this.logger.info('Frontend ready!');
+				this.firstBuild = true;
+				// fs.writeFileSync(`${wconfig.output.path}/index.html`, getHtml(stats.compilation.assets, wconfig.output.publicPath));
+				// console.log(getHtml(stats.compilation.assets));
+				this.onFirstBuild && this.onFirstBuild(stats);
+			} else {
+				this.logger.info('rebuild completed');
+			}
+		});
+	}
 
-devServer.listen(config.webpackPort);
+	startDevServer() {
+		this.devServer = new WebpackDevServer(this.compiler, {
+			quiet: true,
+			noInfo: true,
+			stats: { colors: true },
+			contentBase: config.path.frontend,
+			proxy: {
+				'*': {
+					publicPath: config.publicPath,
+					headers: { 'Access-Control-Allow-Origin': '*' },
+					target: `https://localhost:${config.proxyPort}`,
+					secure: false,
+				},
+			},
+			https: options,
+			hot: true,
+		}).listen(config.port);
+	}
 
-export default devServer;
+	start() {
+
+	}
+
+	dispose() {
+
+	}
+}
+
+export default FrontendServer;

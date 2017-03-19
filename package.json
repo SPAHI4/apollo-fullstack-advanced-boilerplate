@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "node ./server/server.js",
-    "dev": "babel-node ./tools/dev --inspect",
+    "dev": "babel-node ./tools/dev whatch --inspect",
     "tunnel": "NGROK_TUNNEL=true NODE_ENV=staging yarn run build && yarn run start",
     "start:tunnel": "NGROK_TUNNEL=true yarn run build && yarn run start",
     "dev:dashboard": "webpack-dashboard -- babel-node ./tools/dev",
@@ -40,6 +40,7 @@
     "koa": "^2.0.1",
     "koa-bodyparser": "^4.1.0",
     "koa-helmet": "^3.1.0",
+    "koa-json-error": "^3.1.0",
     "koa-jwt": "^3.0.0",
     "koa-logger": "^2.0.1",
     "koa-mount": "^2.0.0",
@@ -118,6 +119,7 @@
     "webpack-dashboard": "^0.3.0",
     "webpack-dev-server": "^2.4.2",
     "webpack-hot-middleware": "^2.17.1",
-    "webpack-merge": "^4.0.0"
+    "webpack-merge": "^4.0.0",
+    "webpack-splitting-manifest-plugin": "^0.0.2"
   }
 }

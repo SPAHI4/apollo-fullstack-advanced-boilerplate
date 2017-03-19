@@ -7,7 +7,7 @@ export default {
 	},
 	development: {
 		port: 1488,
-		webpackPort: 1337,
+		proxyPort: 1337,
 		database: {
 			type: 'mysql',
 			host: 'localhost',

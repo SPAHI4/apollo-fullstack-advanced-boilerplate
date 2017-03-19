@@ -34,7 +34,7 @@ const executableSchema = makeExecutableSchema({
 });
 
 addErrorLoggingToSchema(executableSchema, {
-	log: minilog('graphql').error,
+	log: (...args) => console.log(args),
 });
 
 export default executableSchema;

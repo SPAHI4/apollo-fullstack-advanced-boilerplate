@@ -8,6 +8,7 @@ type User {
 	firstName: String
 	lastName: String
 	posts: [Post]
+	avatar: String
 }
 
 input UserInput {
@@ -16,6 +17,7 @@ input UserInput {
 	password: String!
 	firstName: String
 	lastName: String
+	avatar: File
 }
 
 type Post {
@@ -32,15 +34,22 @@ input PostInput {
 	content: String
 }
 
-type Query {
-	currentUser: User,
-	users: [User],
-	posts: [Post]
+input File {
+	name: String!,
+	type: String!,
+	size: Int!,
+	path: String!
 }
 
 type UserWithToken {
 	token: String!,
 	currentUser: User!
+}
+
+type Query {
+	currentUser: User,
+	users: [User],
+	posts: [Post]
 }
 
 type Mutation {

@@ -5,6 +5,7 @@ import Koa from 'koa';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import minilog from 'minilog';
 import logger from 'koa-logger';
+import error from 'koa-json-error';
 
 import compose from './utils/composeMiddleware';
 import config from '../config';
@@ -14,6 +15,7 @@ const app = new Koa();
 let server;
 
 app
+	.use(error())
 	.use(securityLayer)
 	.use(serveLayer)
 	.use(graphqlLayer);

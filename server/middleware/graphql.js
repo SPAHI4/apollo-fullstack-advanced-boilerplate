@@ -10,7 +10,7 @@ import appRoot from 'app-root-path';
 import config from '../../config';
 import schema from '../graphql/schema';
 import getConnection from '../database/connection';
-import { User } from '../database/entity';
+import { User, Post } from '../database/entity';
 import compose from '../utils/composeMiddleware';
 
 const publicKey = fs.readFileSync(appRoot.resolve('cert/jwt.pub'));
@@ -18,24 +18,25 @@ const publicKey = fs.readFileSync(appRoot.resolve('cert/jwt.pub'));
 const graphql = post(
 	'/graphql',
 	compose(
-		bodyParser({ enableTypes: ['json'] }),
+		bodyParser(),
 		apolloUploadKoa({
 			uploadDir: config.path.uploads,
 		}),
-		async (ctx) => {
+		graphqlKoa(async(ctx) => {
 			const connection = await getConnection();
 
-			return graphqlKoa({
+			return {
 				schema,
 				context: {
 					connection,
 					currentUser: ctx.state.user,
 					userRepository: connection.getRepository(User),
+					postRepository: connection.getRepository(Post),
 				},
 				formatError,
-			});
-		},
-	),
+			}
+		})
+	)
 );
 
 const graphiql = get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));

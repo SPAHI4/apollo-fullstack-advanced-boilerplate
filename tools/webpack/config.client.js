@@ -27,7 +27,8 @@ const baseConfig = {
 	output: {
 		path: config.path.frontend,
 		publicPath: config.publicPath,
-		filename: '[name].[hash].js',
+		//filename: "[chunkhash].js",
+		chunkFilename: "[chunkhash].js"
 		// devtoolModuleFilenameTemplate: 'webpack:///[absolute-resource-path]',
 	},
 	devtool: 'source-map',
@@ -49,6 +50,8 @@ const baseConfig = {
 						'react-hot-loader/babel',
 						'transform-react-jsx-self',
 						'transform-react-jsx-source',
+						'transform-decorators',
+						'transform-class-properties',
 						[
 							'react-css-modules',
 							{
@@ -112,7 +115,7 @@ const baseConfig = {
 				test: /\.(graphql|gql)$/,
 				exclude: /node_modules/,
 				loader: 'graphql-tag/loader'
-			}
+			},
 		],
 	},
 	plugins: [
@@ -123,11 +126,13 @@ const baseConfig = {
 			templateContent: getHtmlTemplate(), // eslint-disable-line no-use-before-define
 		}),
 		new webpack.DefinePlugin({
+			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 			'process.env.IS_DEV': JSON.stringify(IS_DEV),
 			'process.env.IS_PROD': JSON.stringify(!IS_DEV),
 			'process.env.IS_CLIENT': JSON.stringify(true),
 		}),
 	],
+	// recordsOutputPath: config.path.frontend,
 };
 
 function getHtmlTemplate() {

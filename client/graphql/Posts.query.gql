@@ -1,0 +1,13 @@
+query posts {
+	posts {
+		id
+		title
+		content
+		createdAt
+		author {
+			id
+			firstName
+			lastName
+		}
+	}
+}
