@@ -47,7 +47,7 @@ export class User {
 		this.hash = hash;
 	}
 
-	async isValidPassword(password) {
+	async isPasswordValid(password) {
 		return bcrypt.compare(password, this.hash);
 	}
 
