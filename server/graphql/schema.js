@@ -1,6 +1,7 @@
 import {
 	makeExecutableSchema,
-	addErrorLoggingToSchema
+	addErrorLoggingToSchema,
+	addCatchUndefinedToSchema,
 } from 'graphql-tools';
 import { PubSub } from 'graphql-subscriptions';
 import minilog from 'minilog';
@@ -17,9 +18,9 @@ import { postResolvers, userResolvers } from './resolvers';
 import { pubsub } from './subscriptions';
 
 const rootResolvers = {
-	Query: { },
-	Mutation: { },
-	Subscription: { },
+	Query: {},
+	Mutation: {},
+	Subscription: {},
 	Date: GraphQLDate,
 	DateTime: GraphQLDateTime,
 };
@@ -36,5 +37,7 @@ const executableSchema = makeExecutableSchema({
 addErrorLoggingToSchema(executableSchema, {
 	log: (...args) => console.log(args),
 });
+
+addCatchUndefinedToSchema(executableSchema);
 
 export default executableSchema;

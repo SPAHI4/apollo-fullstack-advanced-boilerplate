@@ -46,15 +46,30 @@ type UserWithToken {
 	currentUser: User!
 }
 
+interface Page {
+	totalCount: Int
+}
+
+type UserPage implements Page {
+	node: [User]
+	totalCount: Int!
+}
+
+type PostPage implements Page {
+	node: [Post]
+	totalCount: Int!
+}
+
 type Query {
 	currentUser: User,
-	users: [User],
-	posts: [Post]
+	users(skip: Int, take: Int): UserPage,
+	posts(skip: Int, take: Int): PostPage
 }
 
 type Mutation {
-	getToken(login: String!, password: String!): UserWithToken
+	getToken(username: String, email: String, password: String!): UserWithToken
 	createUser(user: UserInput!): UserWithToken
+	updateUser(user: UserInput!): User
 	createPost(post: PostInput!): Post
 	updatePost(id: Int!, post: PostInput!): Post
 	deletePost(id: Int!): Post

@@ -1,10 +1,5 @@
 import { graphql } from 'react-apollo';
 
-export const authenticatedOnly = (target) => {
-	return async(root, params, ctx) => {
-		if (!ctx.currentUser) {
-			throw new UnauthorizedError();
-		}
-		return target(root, params, ctx);
-	}
-};
+import CURRENT_USER_QUERY from '../graphql/currentUser.query.gql';
+
+export default graphql(CURRENT_USER_QUERY, { name: 'currentUser' });

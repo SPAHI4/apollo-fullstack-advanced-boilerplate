@@ -3,8 +3,15 @@ import { ForbiddenError, NotFoundError } from '../helpers/errors';
 
 export default {
 	Query: {
-		async posts(root, { filter: { skip, take, fields } }, { postRepository }) {
-			const [ posts, count ] = await postRepository.findAll(filter);
+		async posts(root, { take, skip }, { postRepository }) {
+			const [node, totalCount] = await postRepository.findAndCount({}, {
+				skip,
+				take,
+			});
+			return {
+				node,
+				totalCount,
+			};
 		},
 	},
 	Mutation: {

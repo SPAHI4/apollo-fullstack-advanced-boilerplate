@@ -14,18 +14,19 @@ class PostsPage extends Component {
 	static propTypes = {
 		posts: PropTypes.shape({
 			loading: PropTypes.bool.isRequired,
-			posts: PropTypes.array,
+			posts: PropTypes.object,
 		}).isRequired,
 	}
 
 	render() {
-		const { posts = [], loading, error } = this.props.posts;
+		const { posts = {}, loading, error } = this.props.posts;
+		const { node = [], totalCount } = posts;
 
 		return (
 			<div>
 				Posts
 				<Spin spinning={loading}>
-					<PostsList posts={posts}/>
+					<PostsList posts={node}/>
 				</Spin>
 			</div>
 		);

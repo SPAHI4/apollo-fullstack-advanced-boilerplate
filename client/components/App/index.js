@@ -4,6 +4,7 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 const { Header, Content, Footer } = Layout;
 
 import PostsPage from '../../pages/Posts';
+import LoginPage from '../../pages/Login';
 
 import NavBar from '../NavBar';
 
@@ -15,6 +16,8 @@ export default function App() {
 			<NavBar/>
 			<Content>
 				<Switch>
+					<Route path="/login" component={LoginPage}/>
+					<Route path="/register" component={LoginPage}/>
 					<Route path="/" component={PostsPage}/>
 				</Switch>
 			</Content>

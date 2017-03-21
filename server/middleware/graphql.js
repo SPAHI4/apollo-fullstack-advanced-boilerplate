@@ -24,19 +24,26 @@ const graphql = post(
 		}),
 		graphqlKoa(async(ctx) => {
 			const connection = await getConnection();
+			const userRepository = connection.getRepository(User);
+			const postRepository = connection.getRepository(Post);
+			let currentUser = null;
+
+			if (ctx.state.user && ctx.state.user.id) {
+				currentUser = await userRepository.findOneById(ctx.state.user.id);
+			}
 
 			return {
 				schema,
 				context: {
 					connection,
-					currentUser: ctx.state.user,
-					userRepository: connection.getRepository(User),
-					postRepository: connection.getRepository(Post),
+					currentUser,
+					userRepository,
+					postRepository,
 				},
 				formatError,
-			}
-		})
-	)
+			};
+		}),
+	),
 );
 
 const graphiql = get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));

@@ -1,30 +1,7 @@
-import jwt from 'jsonwebtoken';
-import fs from 'fs';
-import appRoot from 'app-root-path';
-
 import { User } from '../../database/entity';
 import { authenticatedOnly } from '../helpers/access';
 import { NotFoundError, ForbiddenError } from '../helpers/errors';
-const cert = fs.readFileSync(appRoot.resolve('cert/jwt.rsa'));
-
-async function createToken(user) {
-	return new Promise((resolve, reject) => {
-		jwt.sign(
-			user,
-			cert,
-			{
-				expiresIn: '10d',
-			},
-			(err, token) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(token);
-				}
-			},
-		);
-	});
-}
+import createJwt from '../../utils/createJwt';
 
 export default {
 	Query: {
@@ -38,8 +15,7 @@ export default {
 	},
 	Mutation: {
 		async createUser(root, { user }, { userRepository }) {
-			const { password, username, email } = user;
-			const newUser = userRepository.create(user);
+			const { password, username, email, firstName, lastName } = user;
 
 			if (await userRepository.findOne({ email })) {
 				throw new Error('Email exists');
@@ -47,9 +23,15 @@ export default {
 			if (await userRepository.findOne({ username })) {
 				throw new Error('Username exists');
 			}
+			const newUser = new User();
+			newUser.username = username; // TODO: remove this
+			newUser.email = email;
+			newUser.firstName = firstName;
+			newUser.lastName = lastName;
+
 			await newUser.setPassword(password);
 			await userRepository.persist(newUser);
-			const token = await createToken({ id: newUser.id });
+			const token = await createJwt({ id: newUser.id });
 			return {
 				token,
 				currentUser: newUser,
@@ -65,7 +47,7 @@ export default {
 				throw new Error('Incorrect password');
 			}
 
-			const token = await createToken({ id: user.id });
+			const token = await createJwt({ id: user.id });
 			return {
 				currentUser: user,
 				token,

@@ -9,7 +9,8 @@ import error from 'koa-json-error';
 
 import compose from './utils/composeMiddleware';
 import config from '../config';
-import { securityLayer, graphqlLayer, serveLayer } from './middleware';
+import { securityLayer, serveLayer } from './middleware';
+let graphqlLayer = require('./middleware/graphql').default;
 
 const app = new Koa();
 let server;
@@ -18,7 +19,7 @@ app
 	.use(error())
 	.use(securityLayer)
 	.use(serveLayer)
-	.use(graphqlLayer);
+	.use((...args) => graphqlLayer(...args));
 
 // app.use(require('koa-static')(config.path.frontend));
 
@@ -43,9 +44,10 @@ server.on('close', () => {
 
 export { app, server };
 
-
+/*
 
 if (module.hot) {
+	console.log('hmr enabled');
 	try {
 		module.hot.dispose(() => {
 			if (server) {
@@ -53,9 +55,13 @@ if (module.hot) {
 			}
 		});
 
-		module.hot.accept();
+		module.hot.accept('./middleware/graphql', () => {
+			console.log('updating graphql...');
+			graphqlLayer = require('./middleware/graphql').default;
+		});
 
 	} catch (err) {
 		console.error(err.stack);
 	}
 }
+*/

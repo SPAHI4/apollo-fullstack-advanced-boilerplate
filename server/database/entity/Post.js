@@ -16,21 +16,21 @@ import { User } from './User';
 @Entity()
 export class Post {
 	@PrimaryGeneratedColumn('int')
-	id;
+	id = undefined;
 
 	@CreateDateColumn()
-	createdAt;
+	createdAt = undefined;
 
 	@UpdateDateColumn()
-	updatedAt;
+	updatedAt = undefined;
 
 	@Column('text')
-	content;
+	content = undefined;
 
 	@Column('string')
-	title;
+	title = undefined;
 
 	@ManyToOne(type => User, user => user.posts)
-	author;
+	author = undefined;
 
 }

@@ -11,21 +11,29 @@ const IS_DEV = process.env.NODE_ENV !== 'production';
 
 const baseConfig = {
 	target: 'node',
-	devtool: 'sourcemap',
+	devtool: 'source-map',
 	context: appRoot.toString(),
 	entry: [
-		// 'webpack/hot/signal.js',
+		'babel-polyfill',
+		'webpack/hot/signal.js',
 		'./server/index.js',
 	],
 	node: {
 		__dirname: true,
 		__filename: true,
 	},
+	watch: true,
 	output: {
-		path: config.path.backend,
+		devtoolModuleFilenameTemplate: '../../[resource-path]',
+		devtoolFallbackModuleFilenameTemplate: '../../[resource-path];[hash]',
 		filename: 'index.js',
+		sourceMapFilename: '[name].[chunkhash].js.map',
+		path: config.path.backend,
+		publicPath: '/',
 	},
-	externals: [nodeExternals()],
+	externals: [nodeExternals({
+		whitelist: [/^webpack/],
+	})],
 	module: {
 		loaders: [
 			{
@@ -51,7 +59,6 @@ const baseConfig = {
 		],
 	},
 	plugins: [
-		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new webpack.DefinePlugin({
 			'process.env.IS_DEV': JSON.stringify(IS_DEV),
@@ -62,6 +69,7 @@ const baseConfig = {
 			raw: true,
 			entryOnly: false
 		}),
+		new webpack.HotModuleReplacementPlugin(),
 	],
 };
 

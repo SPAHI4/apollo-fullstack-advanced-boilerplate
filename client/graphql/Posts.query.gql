@@ -1,13 +1,16 @@
 query posts {
 	posts {
-		id
-		title
-		content
-		createdAt
-		author {
+		node {
 			id
-			firstName
-			lastName
+			title
+			content
+			createdAt
+			author {
+				id
+				firstName
+				lastName
+			}
 		}
+		totalCount
 	}
 }

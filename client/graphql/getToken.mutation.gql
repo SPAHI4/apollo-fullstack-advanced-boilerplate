@@ -1,0 +1,13 @@
+mutation getToken($username: String, $email: String, $password: String!) {
+	getToken(username: $username, email: $email, password: $password) {
+		token
+		currentUser {
+			id
+			username
+			email
+			avatar
+			firstName
+			lastName
+		}
+	}
+}

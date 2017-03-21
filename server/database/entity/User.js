@@ -16,34 +16,34 @@ import { Post } from './Post';
 @Entity()
 export class User {
 	@PrimaryGeneratedColumn('int')
-	id;
+	id = undefined; // TODO: remove undefined declaration
 
 	@Index()
 	@Column('string', { unique: true })
-	email;
+	email = undefined;
 
 	@Index()
 	@Column('string', { unique: true })
-	username;
+	username = undefined;
 
 	@CreateDateColumn()
-	createdAt;
+	createdAt = undefined;
 
 	@Column('string')
-	hash;
+	hash = undefined;
 
 	@Column('string', { nullable: true })
-	firstName;
+	firstName = undefined;
 
 	@Column('string', { nullable: true })
-	lastName;
+	lastName = undefined;
 
 	@OneToMany(type => Post, post => post.author)
-	posts;
+	posts = undefined;
 
 	async setPassword(password) {
 		// TODO: refresh jwt
-		const hash = await bcrypt.hash(password);
+		const hash = await bcrypt.hash(password, 10);
 		this.hash = hash;
 	}
 

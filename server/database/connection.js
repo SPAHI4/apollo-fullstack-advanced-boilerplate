@@ -27,9 +27,9 @@ const connectionOptions = {
 
 export default async function getConnection() {
 	return (connection && connection.isConnected)
-		? connection
-		: createConnection(connectionOptions).then((conn) => {
-			connection = conn;
+		? Promise.resolve(connection)
+		: createConnection(connectionOptions).then((newConnection) => {
+			connection = newConnection;
 			return connection;
 		});
 }
