@@ -11,7 +11,7 @@ class NavBar extends Component {
 		currentUser: PropTypes.shape({
 			loading: PropTypes.bool.isRequired,
 			error: PropTypes.string,
-			currentUser: PropTypes.object.isRequired,
+			currentUser: PropTypes.object,
 		}).isRequired,
 	}
 

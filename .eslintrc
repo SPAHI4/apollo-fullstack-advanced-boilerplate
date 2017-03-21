@@ -11,7 +11,9 @@
 	"node": true
   },
   "ecmaFeatures": {
-	"defaultParams": true
+	"defaultParams": true,
+	"jsx": true,
+	"modules": true
   },
   "rules": {
 	"import/no-extraneous-dependencies": [
