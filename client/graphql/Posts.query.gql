@@ -1,15 +1,9 @@
+#import './postFields.fragment.gql'
+
 query posts {
 	posts {
 		node {
-			id
-			title
-			content
-			createdAt
-			author {
-				id
-				firstName
-				lastName
-			}
+			...postFields
 		}
 		totalCount
 	}

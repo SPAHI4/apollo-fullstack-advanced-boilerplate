@@ -16,7 +16,7 @@ export default {
 	},
 	Mutation: {
 		@authenticatedOnly
-		createPost(root, { post }, { postRepository }) {
+		createPost(_, { post }, { postRepository }) {
 			return postRepository.persist(post);
 		},
 		@authenticatedOnly

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{antd-DefinitelyTyped, graphql-DefinitelyTyped, koa-DefinitelyTyped, koa-jwt-DefinitelyTyped, node-DefinitelyTyped, react-DefinitelyTyped, react-redux-DefinitelyTyped, react-router-DefinitelyTyped, webpack-DefinitelyTyped}" />
-    <includedPredefinedLibrary name="ECMAScript 6" />
+    <file url="PROJECT" libraries="{antd-DefinitelyTyped, graphql-DefinitelyTyped, koa-DefinitelyTyped, koa-bodyparser-DefinitelyTyped, koa-compose-DefinitelyTyped, koa-json-error-DefinitelyTyped, koa-jwt-DefinitelyTyped, koa-mount-DefinitelyTyped, koa-send-DefinitelyTyped, koa-static-DefinitelyTyped, node-DefinitelyTyped, react-DefinitelyTyped, react-intl-DefinitelyTyped, react-redux-DefinitelyTyped, react-router-DefinitelyTyped, webpack-DefinitelyTyped, webpack-dev-server-DefinitelyTyped, webpack-merge-DefinitelyTyped, window-or-global-DefinitelyTyped}" />
   </component>
 </project>

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import './style.css';
 
-const PostItem = (post) => (
+const PostItem = post => (
 	<div>
 		{post.title}
 	</div>
@@ -19,7 +19,7 @@ export default class PostsList extends Component {
 
 		return (
 			<div styleName='list'>
-				{posts.map(post => <PostItem post={post}/>)}
+				{posts.map(post => <PostItem post={post} />)}
 			</div>
 		);
 	}

@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, Layout } from 'antd';
 import { Link } from 'react-router-dom';
 
 import withUser from '../../helpers/withUser';
@@ -19,31 +19,31 @@ class NavBar extends Component {
 		const { currentUser } = this.props.currentUser;
 
 		return (
-			<nav>
+			<Layout.Header>
 				<Menu
 					selectedKeys={[]}
-					mode="horizontal"
+					mode='horizontal'
 				>
-					<Menu.Item key="posts">
-						<Link to="/">
-							<Icon type="database"/>Posts
+					<Menu.Item key='posts'>
+						<Link to='/'>
+							<Icon type='database' />Posts
 						</Link>
 					</Menu.Item>
 					{
 						!currentUser ? (
-							<Menu.Item key="login">
-								<Link to="/login">
-									<Icon type="login"/>Login
+							<Menu.Item key='login'>
+								<Link to='/login'>
+									<Icon type='login' />Login
 								</Link>
 							</Menu.Item>
 						) : (
-							<Menu.Item key="profile">
-								<Icon type="user"/>Edit profile
+							<Menu.Item key='profile'>
+								<Icon type='user' />Edit profile
 							</Menu.Item>
 						)
 					}
 				</Menu>
-			</nav>
+			</Layout.Header>
 		);
 	}
 }

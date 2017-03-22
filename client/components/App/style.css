@@ -1,8 +1,13 @@
-/*
-global styles for the app
- */
-
-
 .app {
-	background: var(--primary-color);
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.content {
+	flex: 1;
+}
+
+.footer {
+	text-align: center;
 }

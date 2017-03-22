@@ -1,8 +1,7 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb-base",
+  "extends": "airbnb",
   "plugins": [
-	"react",
 	"graphql"
   ],
   "env": {
@@ -16,6 +15,16 @@
 	"modules": true
   },
   "rules": {
+	"react/jsx-uses-vars": [2],
+	"react/jsx-indent-props": [
+	  "error",
+	  "tab"
+	],
+	"react/jsx-indent": [
+	  "error",
+	  "tab"
+	],
+	"jsx-quotes": ["error", "prefer-single"],
 	"import/no-extraneous-dependencies": [
 	  "error",
 	  {
@@ -26,11 +35,8 @@
 		]
 	  }
 	],
-	// We use the 'import' plugin which allows for cases "flow" awareness.
 	"no-duplicate-imports": 0,
-	// A .jsx extension is not required for files containing jsx.
 	"react/jsx-filename-extension": 0,
-	// We use global requires in various places, e.g. code splitting instances.
 	"global-require": 0,
 	// Tabs are semantically right
 	"no-tabs": 0,

@@ -1,5 +1,5 @@
 export default {
-	primaryColor: '#009688',
+	primaryColor: '#6534ff',
 	publicPath: '/',
 	http2: {
 		enabled: true,
