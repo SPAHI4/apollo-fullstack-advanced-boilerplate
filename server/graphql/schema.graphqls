@@ -76,7 +76,9 @@ type Mutation {
 }
 
 type Subscription {
-	postCreated: Post
+	createdPost: Post
+	updatedPost: Post
+	deletedPost: Post
 }
 
 schema {

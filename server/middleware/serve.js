@@ -11,11 +11,8 @@ const assets = serve(config.path.frontend);
 
 const uploads = mount('/uploads', (ctx) => { ctx.set('Content-Disposition', 'attachment'); }, serve(config.path.uploads));
 
-const anyPath = async (ctx, next) => {
-	await next();
-	if (ctx.method === 'GET') {
-		await send(ctx, 'index.html', { root: config.path.frontend });
-	}
-};
+const anyPath = get('/*', async (ctx) => {
+	await send(ctx, 'index.html', { root: config.path.frontend });
+});
 
 export default compose(assets, uploads, anyPath);

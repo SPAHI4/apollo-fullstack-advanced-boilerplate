@@ -18,10 +18,8 @@ let server;
 app
 	.use(error())
 	.use(securityLayer)
-	.use(serveLayer)
-	.use((...args) => graphqlLayer(...args));
-
-// app.use(require('koa-static')(config.path.frontend));
+	.use((...args) => graphqlLayer(...args)) // hot reload
+	.use(serveLayer); // We use serve after graphql to allow access to GET /graphiql
 
 const options = {
 	key: fs.readFileSync('./cert/localhost.key'),

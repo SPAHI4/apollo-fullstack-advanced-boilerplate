@@ -22,7 +22,7 @@ process.on('exit', () => {
 function runServer(path) {
 	if (serverStarted) {
 		serverStarted = false;
-		server = spawn('inspect', [path], { stdio: 'inherit' });
+		server = spawn('node', [path, '--debug-brk=3228'], { stdio: 'inherit' });
 		server.on('exit', code => {
 			if (code === 250) {
 				// App requested full reload

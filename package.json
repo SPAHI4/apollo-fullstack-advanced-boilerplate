@@ -1,11 +1,11 @@
 {
   "scripts": {
     "start": "node ./server/server.js",
-    "dev": "babel-node ./tools/dev whatch --inspect",
+    "dev": "babel-node ./tools/dev whatch",
     "tunnel": "NGROK_TUNNEL=true NODE_ENV=staging yarn run build && yarn run start",
     "start:tunnel": "NGROK_TUNNEL=true yarn run build && yarn run start",
     "dev:dashboard": "webpack-dashboard -- babel-node ./tools/dev",
-    "~postinstall": "typeorm schema:sync && typeorm migrations:run && yarn run build",
+    "~postinstall": "typeorm schema:sync && typeorm migrations:run && yarn run build && yarn run start",
     "generate-schema": "apollo-codegen introspect-schema ./server/graphql/schema.graphqls --output graphql.schema.json"
   },
   "engines": {

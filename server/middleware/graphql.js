@@ -40,7 +40,7 @@ const graphql = post(
 					userRepository,
 					postRepository,
 				},
-				formatError,
+				// formatError,
 			};
 		}),
 	),

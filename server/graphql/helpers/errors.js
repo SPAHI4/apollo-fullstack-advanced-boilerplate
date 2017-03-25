@@ -1,7 +1,7 @@
 import { createError } from 'apollo-errors';
 
 export const UnauthorizedError = createError('UnauthorizedError', {
-	statusCode: 401,
+	statusCode: 401, // https://github.com/thebigredgeek/apollo-errors/issues/5
 	message: 'User unauthorized',
 });
 

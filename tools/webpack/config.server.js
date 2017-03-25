@@ -64,12 +64,6 @@ const baseConfig = {
 			'process.env.IS_DEV': JSON.stringify(IS_DEV),
 			'process.env.IS_PROD': JSON.stringify(!IS_DEV),
 		}),
-		new webpack.BannerPlugin({
-			banner: 'require("source-map-support").install();',
-			raw: true,
-			entryOnly: false
-		}),
-		new webpack.HotModuleReplacementPlugin(),
 	],
 };
 
