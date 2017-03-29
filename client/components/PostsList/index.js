@@ -1,27 +1,23 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
 import './style.css';
 
-const PostItem = post => (
+export const PostItem = ({ post }) => (
 	<div>
 		{post.title}
 	</div>
 );
 
-export default class PostsList extends Component {
+PostItem.propTypes = {
+	post: PropTypes.object.isRequired,
+};
 
-	static propTypes = {
-		posts: PropTypes.array,
-	}
+export const PostsList = ({ posts }) => (
+	<div styleName='list'>
+		{posts.map(post => <PostItem key={post.id} post={post} />)}
+	</div>
+);
 
-	render() {
-		const { posts } = this.props;
-
-		return (
-			<div styleName='list'>
-				{posts.map(post => <PostItem post={post} />)}
-			</div>
-		);
-	}
-
-}
+PostsList.propTypes = {
+	posts: PropTypes.arrayOf(PropTypes.object),
+};

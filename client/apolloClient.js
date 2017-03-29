@@ -1,19 +1,12 @@
 import ApolloClient, { createBatchingNetworkInterface } from 'apollo-client';
-import createNetworkInterface from 'apollo-upload-client';
+import { createBatchNetworkInterface } from 'apollo-upload-client';
 import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 
 const getAuthToken = () => localStorage.getItem('auth-token');
 
-/* const networkInterface = createBatchingNetworkInterface({
- uri: '/graphql',
- batchInterval: 10,
- opts: {
- credentials: 'same-origin',
- },
- }); */
-
-const networkInterface = createNetworkInterface({
+const networkInterface = createBatchNetworkInterface({
 	uri: '/graphql',
+	batchInterval: 10,
 	opts: {
 		credentials: 'same-origin',
 	},
@@ -27,7 +20,7 @@ const wsClient = new SubscriptionClient(window.location.origin.replace('https:',
 });
 
 const authMiddleware = {
-	applyMiddleware(req, next) {
+	applyBatchMiddleware(req, next) {
 		if (!req.options.headers) {
 			req.options.headers = {};
 		}
@@ -35,27 +28,31 @@ const authMiddleware = {
 		const token = getAuthToken();
 		req.options.headers.authorization = token ? `Bearer ${token}` : null;
 		next();
-	}
+	},
 };
 
 const authErrorAfterware = {
-	applyAfterware({ response }, next) {
-		if (response.status === 401) {
-			// TODO: logout();
-			console.log('Logging out...');
-		}
+	applyBatchAfterware({ responses }, next) {
+		responses.forEach((response) => {
+			if (response.status === 500) {
+				// TODO: show error message
+				console.error('Server returned an error');
+			}
+		});
 		next();
-	}
+	},
 };
 
 const serverErrorAfterware = {
-	applyAfterware({ response }, next) {
-		if (response.status === 500) {
-			// TODO: show error message
-			console.error('Server returned an error');
-		}
+	applyBatchAfterware({ responses }, next) {
+		responses.forEach((response) => {
+			if (response.status === 500) {
+				// TODO: show error message
+				console.error('Server returned an error');
+			}
+		});
 		next();
-	}
+	},
 };
 
 networkInterface
@@ -65,7 +62,7 @@ networkInterface
 // Extend the network interface with the WebSocket
 const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
 	networkInterface,
-	wsClient
+	wsClient,
 );
 
 const apolloClient = new ApolloClient({

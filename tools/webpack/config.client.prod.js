@@ -1,3 +1,5 @@
-export default  {
+import webpack from 'webpack';
 
-}
+export default {
+	bail: true,
+};

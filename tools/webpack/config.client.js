@@ -80,6 +80,7 @@ const baseConfig = {
 						options: {
 							sourceMap: 'inline',
 							plugins: [
+								require('postcss-import')(),
 								require('postcss-cssnext')({
 									features: {
 										customProperties: {

@@ -26,6 +26,7 @@ const options = {
 	cert: fs.readFileSync('./cert/localhost.crt'),
 };
 
+
 const { createServer } = (config.http2.enabled ? http2 : https);
 server = createServer(options, app.callback());
 
@@ -41,6 +42,10 @@ server.on('close', () => {
 });
 
 export { app, server };
+
+if (module.hot) {
+	module.hot.accept();
+}
 
 /*
 

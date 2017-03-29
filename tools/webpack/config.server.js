@@ -14,7 +14,7 @@ const baseConfig = {
 	devtool: 'source-map',
 	context: appRoot.toString(),
 	entry: [
-		'babel-polyfill',
+		// 'babel-polyfill',
 		'webpack/hot/signal.js',
 		'./server/index.js',
 	],
@@ -59,6 +59,7 @@ const baseConfig = {
 		],
 	},
 	plugins: [
+		new webpack.NamedModulesPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new webpack.DefinePlugin({
 			'process.env.IS_DEV': JSON.stringify(IS_DEV),

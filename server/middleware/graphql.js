@@ -22,7 +22,7 @@ const graphql = post(
 		apolloUploadKoa({
 			uploadDir: config.path.uploads,
 		}),
-		graphqlKoa(async(ctx) => {
+		graphqlKoa(async (ctx) => {
 			const connection = await getConnection();
 			const userRepository = connection.getRepository(User);
 			const postRepository = connection.getRepository(Post);
@@ -40,7 +40,7 @@ const graphql = post(
 					userRepository,
 					postRepository,
 				},
-				// formatError,
+				formatError,
 			};
 		}),
 	),

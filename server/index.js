@@ -9,7 +9,10 @@ server.listen(process.env.IS_DEV ? config.proxyPort : config.port, () => {
 });
 
 if (module.hot) {
-	module.hot.accept('./app', () => {
+	module.hot.accept();
+
+	module.hot.accept('./app.js', () => {
+		// FIXME: the code below never runs
 		console.log('server hot reloading...');
 		server.removeListener('request', currentApp);
 		server.on('request', app.callback());

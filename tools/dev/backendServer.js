@@ -1,53 +1,65 @@
-// this file will run both from webpack and babel-node
-
 import webpack from 'webpack';
+import fs from 'fs';
+import chalk from 'chalk';
+import minilog from 'minilog';
 import { spawn } from 'child_process';
 import ora from 'ora';
-import minilog from 'minilog';
 
 import config from '../../config';
-import serverConfig from '../webpack/config.server';
-import WebpackReporter from '../webpack/reporter';
 
+class BackendServer {
 
-let server;
-let serverStarted;
+	isFirstBuild = true
+	serverProcess;
 
-process.on('exit', () => {
-	if (server) {
-		server.kill('SIGTERM');
+	constructor(webpackConfig) {
+		this.compiler = webpack(webpackConfig);
+		this.logger = minilog('webpack:backend');
+		this.compiler.plugin('compile', this.onCompileStart);
+		this.compiler.plugin('done', this.onCompileDone);
+		this.watcher = this.compiler.watch(null, () => undefined);
 	}
-});
 
-function runServer(path) {
-	if (serverStarted) {
-		serverStarted = false;
-		server = spawn('node', [path, '--debug-brk=3228'], { stdio: 'inherit' });
-		server.on('exit', code => {
-			if (code === 250) {
-				// App requested full reload
-				serverStarted = true;
-			}
-			console.log('Backend has been stopped');
-			server = undefined;
-			runServer(path);
-		});
+	startServer() {
+		this.serverProcess = spawn('inspect', [config.path.backend], { stdio: 'inherit' });
 	}
+
+	onCompileStart = () => {
+		if (this.isFirstBuild) {
+			// this.logger.log('Building backend...');
+			this.status = ora('Compiling backend...').start();
+		} else {
+			this.logger.debug('rebuilding backend...');
+		}
+	}
+
+	onCompileDone = (stats) => {
+		if (stats.hasErrors()) {
+			this.status(false);
+			// this.logger.error('Backend build failed:');
+			this.status.fail('Backend build failed:');
+			this.logger.error(stats.toString({
+				colors: true,
+			}));
+		} else if (this.isFirstBuild) {
+			// this.logger.log('Backend ready!');
+			this.status.succeed('Backend ready!');
+			this.isFirstBuild = false;
+			!this.serverProcess && this.startServer();
+			this.onFirstBuild && this.onFirstBuild(stats);
+		} else {
+			this.logger.debug('backend rebuilt');
+		}
+	}
+
+	reload() {
+
+	}
+
+	dispose() {
+		if (this.serverProcess) this.serverProcess.kill();
+	}
+
 }
 
-const compiler = webpack(serverConfig);
-const webpackReporter = new WebpackReporter(compiler, 'backend');
-
-compiler.plugin('done', () => {
-	serverStarted = true;
-	console.log('DONE!');
-	if (server) {
-
-	} else {
-		runServer(config.path.backend);
-	}
-});
-
-compiler.watch({}, webpackReporter.reporter());
-
-export default compiler;
+export default BackendServer;

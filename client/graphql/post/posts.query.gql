@@ -1,0 +1,10 @@
+#import './postFields.fragment.gql'
+
+query posts($skip: Int, $take: Int) {
+	posts(skip: $skip, take: $take) {
+		nodes {
+			...postFields
+		}
+		totalCount
+	}
+}

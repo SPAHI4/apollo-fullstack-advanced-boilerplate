@@ -21,7 +21,7 @@ input UserInput {
 }
 
 type Post {
-	id: ID!,
+	id: ID!
 	title: String!
 	content: String
 	createdAt: DateTime
@@ -35,28 +35,29 @@ input PostInput {
 }
 
 input File {
-	name: String!,
-	type: String!,
-	size: Int!,
+	name: String!
+	type: String!
+	size: Int!
 	path: String!
 }
 
 type UserWithToken {
-	token: String!,
+	token: String!
 	currentUser: User!
 }
 
+#simple offset-based pagination
 interface Page {
 	totalCount: Int
 }
 
 type UserPage implements Page {
-	node: [User]
+	nodes: [User]
 	totalCount: Int!
 }
 
 type PostPage implements Page {
-	node: [Post]
+	nodes: [Post!]
 	totalCount: Int!
 }
 

@@ -1,18 +1,15 @@
 import React, { PropTypes, Component } from 'react';
 import { Menu, Icon, Layout } from 'antd';
 import { Link } from 'react-router-dom';
+import { propType } from 'graphql-anywhere';
 
-import withUser from '../../helpers/withUser';
+import { withCurrentUser, currentUserPropType } from '../../helpers/withCurrentUser';
 
-@withUser
+@withCurrentUser
 class NavBar extends Component {
 
 	static propTypes = {
-		currentUser: PropTypes.shape({
-			loading: PropTypes.bool.isRequired,
-			error: PropTypes.string,
-			currentUser: PropTypes.object,
-		}).isRequired,
+		currentUser: currentUserPropType,
 	}
 
 	render() {

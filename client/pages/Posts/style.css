@@ -1,0 +1,10 @@
+@import "../../global-styles.css";
+
+.page {
+	@apply --page-mixin;
+}
+
+.load-more {
+	text-align: center;
+	padding: 24px;
+}

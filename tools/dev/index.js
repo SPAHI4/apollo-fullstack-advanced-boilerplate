@@ -5,11 +5,13 @@ import '../log';
 import config from '../../config';
 
 // import dllCompiler from './dllCompiler';
-import backendServer from './backendServer';
+import BackendServer from './backendServer';
 import FrontendServer from './frontendServer';
 import frontendConfig from '../webpack/config.client';
+import backendConfig from '../webpack/config.server';
 
 const frontendServer = new FrontendServer(frontendConfig);
+const backendServer = new BackendServer(backendConfig);
 
 frontendServer.onFirstBuild = () => {
 	console.log(`Developer server started:

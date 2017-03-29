@@ -1,3 +1,5 @@
-/*
-TODO
- */
+:root {
+	--page-mixin: {
+		flex: 1;
+	}
+}

@@ -3,48 +3,53 @@ import fs from 'fs';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
 import minilog from 'minilog';
+const ora = require('ora');
 
 import config from '../../config';
-import webpackConfig from '../webpack/config.client';
-import getHtml from './getHtml';
-
-const options = {
-	key: fs.readFileSync('./cert/localhost.key'),
-	cert: fs.readFileSync('./cert/localhost.crt'),
-};
-const compiler = webpack(webpackConfig);
 
 class FrontendServer {
 
-	firstBuild = false
+	isFirstBuild = true
 
-	constructor(wconfig) {
-		this.compiler = webpack(wconfig);
-		this.startDevServer();
+	constructor(webpackConfig) {
+		this.compiler = webpack(webpackConfig);
 		this.logger = minilog('webpack:frontend');
-		this.compiler.plugin('compile', (stats) => {
-			this.logger.info('Building frontend...');
-		});
-		this.compiler.plugin('done', (stats) => {
-			debugger;
-			if (stats.hasErrors()) {
-				this.logger.error('Frontend build failed:');
-				this.logger.error(stats.toString({
-					colors: true
-				}));
-			} else if (!this.firstBuild) {
-				this.logger.info('Frontend ready!');
-				this.firstBuild = true;
-				// fs.writeFileSync(`${wconfig.output.path}/index.html`, getHtml(stats.compilation.assets, wconfig.output.publicPath));
-				// console.log(getHtml(stats.compilation.assets));
-				this.onFirstBuild && this.onFirstBuild(stats);
-			} else {
-				this.logger.info('rebuild completed');
-			}
-		});
+		this.compiler.plugin('compile', this.onCompileStart);
+		this.compiler.plugin('done', this.onCompileDone);
+		this.startDevServer();
+	}
+
+	onCompileStart = () => {
+		if (this.isFirstBuild) {
+			// this.logger.log('Building frontend...');
+			this.status = ora('Compiling frontend...').start();
+		} else {
+			this.logger.debug('rebuilding frontend...');
+		}
+	}
+
+	onCompileDone = (stats) => {
+		if (stats.hasErrors()) {
+			// this.logger.error('Frontend build failed:');
+			this.status.fail('Frontend build failed:');
+			this.logger.error(stats.toString({
+				colors: true,
+			}));
+		} else if (this.isFirstBuild) {
+			// this.logger.log('Frontend ready!');
+			this.status.succeed('Frontend ready!');
+			this.isFirstBuild = false;
+			this.onFirstBuild && this.onFirstBuild(stats);
+		} else {
+			this.logger.debug('frontend rebuilt');
+		}
 	}
 
 	startDevServer() {
+		const httpsOptions = {
+			key: fs.readFileSync('./cert/localhost.key'),
+			cert: fs.readFileSync('./cert/localhost.crt'),
+		};
 		this.devServer = new WebpackDevServer(this.compiler, {
 			quiet: true,
 			noInfo: true,
@@ -58,18 +63,15 @@ class FrontendServer {
 					secure: false,
 				},
 			},
-			https: options,
+			https: httpsOptions,
 			hot: true,
 		}).listen(config.port);
 	}
 
-	start() {
-
-	}
-
 	dispose() {
-
+		this.devServer.close();
 	}
+
 }
 
 export default FrontendServer;

@@ -4,12 +4,9 @@ import { ForbiddenError, NotFoundError } from '../helpers/errors';
 export default {
 	Query: {
 		async posts(root, { take, skip }, { postRepository }) {
-			const [node, totalCount] = await postRepository.findAndCount({}, {
-				skip,
-				take,
-			});
+			const [nodes, totalCount] = await postRepository.findAndCount();
 			return {
-				node,
+				nodes,
 				totalCount,
 			};
 		},
@@ -31,6 +28,15 @@ export default {
 
 			post = postRepository.merge(post, postInput);
 			return postRepository.persist(post);
+		},
+	},
+	Post: {
+		author(post, _, ctx) {
+			return {
+				id: 123,
+				avatar: null,
+				username: 'test',
+			};
 		},
 	},
 };

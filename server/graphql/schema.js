@@ -30,7 +30,7 @@ const schema = [rootSchema];
 const resolvers = merge(rootResolvers, userResolvers, postResolvers);
 
 const executableSchema = makeExecutableSchema({
-	typeDefs: schema,
+	typeDefs: schema, // TODO: divide schemas like resolvers
 	resolvers,
 });
 
