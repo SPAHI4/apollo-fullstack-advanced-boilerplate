@@ -17,6 +17,18 @@
           "description": "",
           "fields": [
             {
+              "name": "user",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "currentUser",
               "description": "",
               "args": [],
@@ -55,7 +67,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "UserPagination",
+                "name": "UserPage",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -88,7 +100,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "PostPagination",
+                "name": "PostPage",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -317,7 +329,7 @@
         {
           "kind": "SCALAR",
           "name": "DateTime",
-          "description": "",
+          "description": "A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -336,11 +348,11 @@
         },
         {
           "kind": "OBJECT",
-          "name": "UserPagination",
+          "name": "UserPage",
           "description": "",
           "fields": [
             {
-              "name": "node",
+              "name": "nodes",
               "description": "",
               "args": [],
               "type": {
@@ -376,7 +388,7 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
-              "name": "Pagination",
+              "name": "Page",
               "ofType": null
             }
           ],
@@ -385,8 +397,8 @@
         },
         {
           "kind": "INTERFACE",
-          "name": "Pagination",
-          "description": "",
+          "name": "Page",
+          "description": "simple offset-based pagination",
           "fields": [
             {
               "name": "totalCount",
@@ -407,32 +419,36 @@
           "possibleTypes": [
             {
               "kind": "OBJECT",
-              "name": "UserPagination",
+              "name": "UserPage",
               "ofType": null
             },
             {
               "kind": "OBJECT",
-              "name": "PostPagination",
+              "name": "PostPage",
               "ofType": null
             }
           ]
         },
         {
           "kind": "OBJECT",
-          "name": "PostPagination",
+          "name": "PostPage",
           "description": "",
           "fields": [
             {
-              "name": "node",
+              "name": "nodes",
               "description": "",
               "args": [],
               "type": {
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "OBJECT",
-                  "name": "Post",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Post",
+                    "ofType": null
+                  }
                 }
               },
               "isDeprecated": false,
@@ -459,7 +475,7 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
-              "name": "Pagination",
+              "name": "Page",
               "ofType": null
             }
           ],
@@ -471,6 +487,18 @@
           "name": "Mutation",
           "description": "",
           "fields": [
+            {
+              "name": "test",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "getToken",
               "description": "",
@@ -903,7 +931,43 @@
           "description": "",
           "fields": [
             {
-              "name": "postCreated",
+              "name": "test",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createdPost",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Post",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updatedPost",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Post",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "deletedPost",
               "description": "",
               "args": [],
               "type": {
@@ -1771,7 +1835,7 @@
         {
           "kind": "SCALAR",
           "name": "Date",
-          "description": "",
+          "description": "A date string, such as 2007-12-03, compliant with the `full-date`format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.",
           "fields": null,
           "inputFields": null,
           "interfaces": null,

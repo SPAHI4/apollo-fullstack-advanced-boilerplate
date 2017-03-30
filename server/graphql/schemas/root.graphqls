@@ -1,0 +1,32 @@
+scalar DateTime
+scalar Date
+
+input File {
+	name: String!
+	type: String!
+	size: Int!
+	path: String!
+}
+
+#simple offset-based pagination
+interface Page {
+	totalCount: Int
+}
+
+type Query {
+	user: User
+}
+
+type Mutation {
+	test: User
+}
+
+type Subscription {
+	test: User
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+	subscription: Subscription
+}

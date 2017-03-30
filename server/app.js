@@ -18,14 +18,13 @@ let server;
 app
 	.use(error())
 	.use(securityLayer)
-	.use((...args) => graphqlLayer(...args)) // hot reload
+	.use(graphqlLayer) // hot reload
 	.use(serveLayer); // We use serve after graphql to allow access to GET /graphiql
 
 const options = {
 	key: fs.readFileSync('./cert/localhost.key'),
 	cert: fs.readFileSync('./cert/localhost.crt'),
 };
-
 
 const { createServer } = (config.http2.enabled ? http2 : https);
 server = createServer(options, app.callback());

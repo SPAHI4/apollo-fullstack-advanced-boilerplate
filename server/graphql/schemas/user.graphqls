@@ -1,0 +1,40 @@
+type User {
+	id: ID!
+	username: String
+	email: String
+	firstName: String
+	lastName: String
+	posts: [Post]
+	avatar: String
+}
+
+input UserInput {
+	username: String!
+	email: String!
+	password: String!
+	firstName: String
+	lastName: String
+	avatar: File
+}
+
+type UserWithToken {
+	token: String!
+	currentUser: User!
+}
+
+
+type UserPage implements Page {
+	nodes: [User]
+	totalCount: Int!
+}
+
+extend type Query {
+	currentUser: User
+	users(skip: Int, take: Int): UserPage
+}
+
+extend type Mutation {
+	getToken(username: String, email: String, password: String!): UserWithToken
+	createUser(user: UserInput!): UserWithToken
+	updateUser(user: UserInput!): User
+}

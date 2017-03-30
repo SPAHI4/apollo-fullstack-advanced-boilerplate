@@ -15,7 +15,7 @@ import compose from '../utils/composeMiddleware';
 
 const publicKey = fs.readFileSync(appRoot.resolve('cert/jwt.pub'));
 
-const graphql = post(
+const withGraphql = post(
 	'/graphql',
 	compose(
 		bodyParser(),
@@ -35,7 +35,6 @@ const graphql = post(
 			return {
 				schema,
 				context: {
-					connection,
 					currentUser,
 					userRepository,
 					postRepository,
@@ -46,6 +45,11 @@ const graphql = post(
 	),
 );
 
-const graphiql = get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
+const withGraphiql = get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
 
-export default compose(koaJwt({ secret: publicKey, passthrough: true }), graphql, graphiql);
+const withJwt = koaJwt({
+	secret: publicKey,
+	passthrough: true, // we can secure resolver later by decorator
+});
+
+export default compose(withJwt, withGraphql, withGraphiql);

@@ -11,8 +11,9 @@ import {
 } from 'graphql-iso-date';
 import { merge } from 'lodash';
 
-import rootSchema from './schema.graphqls';
-// const rootSchema = require('fs').readFileSync(__dirname + '/schema.graphqls').toString();
+import rootSchema from './schemas/root.graphqls';
+import postSchema from './schemas/post.graphqls';
+import userSchema from './schemas/user.graphqls';
 
 import { postResolvers, userResolvers } from './resolvers';
 import { pubsub } from './subscriptions';
@@ -26,11 +27,11 @@ const rootResolvers = {
 };
 
 
-const schema = [rootSchema];
+const schema = [userSchema, postSchema, rootSchema];
 const resolvers = merge(rootResolvers, userResolvers, postResolvers);
 
 const executableSchema = makeExecutableSchema({
-	typeDefs: schema, // TODO: divide schemas like resolvers
+	typeDefs: schema,
 	resolvers,
 });
 

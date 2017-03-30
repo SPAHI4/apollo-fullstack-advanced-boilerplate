@@ -21,7 +21,7 @@ class BackendServer {
 	}
 
 	startServer() {
-		this.serverProcess = spawn('inspect', [config.path.backend], { stdio: 'inherit' });
+		this.serverProcess = spawn('node', [config.path.backend], { stdio: 'inherit' });
 	}
 
 	onCompileStart = () => {
@@ -48,7 +48,9 @@ class BackendServer {
 			!this.serverProcess && this.startServer();
 			this.onFirstBuild && this.onFirstBuild(stats);
 		} else {
-			this.logger.debug('backend rebuilt');
+			this.logger.debug('... done; restarting server...');
+			this.serverProcess.kill();
+			this.startServer();
 		}
 	}
 
